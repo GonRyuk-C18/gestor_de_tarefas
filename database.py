@@ -1,0 +1,1 @@
+# Conexão e operações com o banco de dados (SQLite ou JSON)#
