@@ -11,9 +11,9 @@ def main():
 
 
     opcao = ""
-    while opcao != '5':
+    while opcao != '0':
         opcao= exibir_menu()
-        select_opcao(opcao, conection)
+        select_opcao(conection, opcao)
         # select_opcao(opcao)
         print("")
 

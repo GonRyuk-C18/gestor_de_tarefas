@@ -15,7 +15,7 @@ def create_connection(db_file):
 
 def initalize_database(conection):
 
-    create_table_sql = """CREATE TABLE IF NOT EXISTS tasts (
+    create_table_sql = """CREATE TABLE IF NOT EXISTS tasks (
         id  INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         description TEXT,
@@ -58,6 +58,22 @@ def get_all_tasks(conection):
         })
     return tasks
 
+def get_task(conection, task_id):
+    sql = "SELECT id, title, description, due_date, priority, status FROM tasks WHERE id = ?;"
+    curs = conection.cursor()
+    curs.execute(sql, (task_id,))
+    row = curs.fetchone()
+    if row is None:
+        return  None
+    return {
+        "id": row[0],
+        "title": row[1],
+        "description": row[2],
+        "due_date": row[3],
+        "priority": row[4],
+        "status": row[5],
+    }
+
 def update_task(conection, task_id, new_title=None, new_description=None, new_due_date=None, new_priority=None, new_status=None):
 
     fields = []
@@ -79,12 +95,19 @@ def update_task(conection, task_id, new_title=None, new_description=None, new_du
         params.append(new_status)
 
     if not fields:
-        return  False
+        return False
 
     params.append(task_id)
     sql = f"UPDATE tasks SET {', '.join(fields)} WHERE id = ?;"
     curs = conection.cursor()
     curs.execute(sql, tuple(params))
+    conection.commit()
+    return curs.rowcount > 0
+
+def update_task_status(conection, task_id, new_status):
+    sql = f"UPDATE tasks SET status = ? WHERE id = ?;"
+    curs = conection.cursor()
+    curs.execute(sql, (new_status, task_id))
     conection.commit()
     return curs.rowcount > 0
 
