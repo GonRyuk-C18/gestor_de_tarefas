@@ -30,22 +30,22 @@ def select_opcao(opcao):
                 print(f"{idx}. {t}")
     elif opcao =='3':
         index = int(input("Digite o numero da tarefa a ser alterada: "))
-        new_title = input("Novo titulo (em branco se não quisera alterar) ")
-        new_description = input("Nova descrição (em branco se não quisera alterar) ")
-        new_due_date = input("Nova data de vencimento (YYYY-MM-DD) (em branco se não quisera alterar) ")
-        new_priority = input("Nova prioiridade (1-5) (em branco se não quisera alterar) ")
-        new_status = input("Novo status (em branco se não quisera alterar) ")
+        new_title = input("Novo titulo (em branco se não quisera alterar) ") or None
+        new_description = input("Nova descrição (em branco se não quisera alterar) ") or None
+        new_due_date = input("Nova data de vencimento (YYYY-MM-DD) (em branco se não quisera alterar) ") or None
+        new_priority = input("Nova prioiridade (1-5) (em branco se não quisera alterar) ") or None
+        new_status = input("Novo status (em branco se não quisera alterar) ") or None
 
-        new_title = new_title if new_title else None
-        new_description = new_description if new_description else None
-        new_due_date = new_due_date if new_due_date else None
-        new_priority = new_priority if new_priority else None
-        new_status = new_status if new_status else None
+        # new_title = new_title if new_title else None
+        # new_description = new_description if new_description else None
+        # new_due_date = new_due_date if new_due_date else None
+        # new_priority = new_priority if new_priority else None
+        # new_status = new_status if new_status else None
 
-        task = change_task(index, new_title, new_description, new_due_date, new_priority, new_status)
+        task = change_task((index-1), new_title, new_description, new_due_date, new_priority, new_status)
     elif opcao == '4':
         index = int(input("Digite o numero da tarefa a ser eliminada: "))
-        if delete_task(index):
+        if delete_task((index-1)):
             print("tarefa eliminda com sucesso!")
         else:
             print("tarefa não encontrada!")
