@@ -1,6 +1,6 @@
 
 
-from controllers import create_task, get_all_tasks, change_task, delete_task, change_task_db, update_task,update_task_status_db,get_all_tasks_db,get_task_db, delete_task_db
+from controllers import create_task, get_all_tasks, change_task, delete_task, change_task_db, update_task,update_task_status_db,get_all_tasks_db,get_task_db, delete_task_db, validate_date_format
 
 def exibir_menu():
     print("\n --- Gestor de Tarefas ---")
@@ -19,9 +19,13 @@ def select_opcao(conection, opcao):
         title = input("Titulo da Tarefa: ")
         description = input("Descrição: ")
         due_date = input("Data de vencimento (YYYY-MM-DD) : ")
+        while not validate_date_format(due_date):
+            print("Data invalida! Por favor insira data no formato YYYY-MM-DD")
+            due_date = input("Data de vencimento (YYYY-MM-DD) : ")
+
         priority = input("Prioridade (1-5): ")
         #task = create_task(title,description,due_date,priority)
-        task = create_task(conection,title,description,due_date,priority)
+        task = create_task(conection,title,description,due_date,priority,)
         print('Tarefa Criada com sucesso!')
         #print(f"{task}")
         print(task)
@@ -59,7 +63,7 @@ def select_opcao(conection, opcao):
             print("Estado inválido!")
         else:
             if i == 1:
-                new_status = 'Pedente'
+                new_status = 'Pendente'
             elif i == 2:
                 new_status = 'In Progress'
             elif i == 3:

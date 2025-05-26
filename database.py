@@ -21,7 +21,8 @@ def initalize_database(conection):
         description TEXT,
         due_date TEXT,
         priority INTEGER,
-        status TEXT);
+        status TEXT,
+        created_at TEXT);
         """
     try:
         curs = conection.cursor()
@@ -32,16 +33,16 @@ def initalize_database(conection):
         print(f"Erro ao criar a tabela. {e}")
 
 def add_task(conection, task):
-    sql = """ INSERT INTO tasks(title, description, due_date, priority, status)
-    VALUES (?, ?, ?, ?, ?);
+    sql = """ INSERT INTO tasks(title, description, due_date, priority, status, created_at)
+    VALUES (?, ?, ?, ?, ?, ?);
     """
     curs = conection.cursor()
-    curs.execute(sql, (task.title, task.description, task.due_date, task.priority, task.status))
+    curs.execute(sql, (task.title, task.description, task.due_date, task.priority, task.status, task.created_at))
     conection.commit()
     return curs.lastrowid
 
 def get_all_tasks(conection):
-    sql = "SELECT id, title, description, due_date, priority, status FROM tasks;"
+    sql = "SELECT id, title, description, due_date, priority, status, created_at FROM tasks;"
     curs = conection.cursor()
     curs.execute(sql)
     rows = curs.fetchall()
@@ -55,11 +56,13 @@ def get_all_tasks(conection):
             "due_date": row[3],
             "priority": row[4],
             "status": row[5],
+            "created_at": row[6],
+
         })
     return tasks
 
 def get_task(conection, task_id):
-    sql = "SELECT id, title, description, due_date, priority, status FROM tasks WHERE id = ?;"
+    sql = "SELECT id, title, description, due_date, priority, status, created_at FROM tasks WHERE id = ?;"
     curs = conection.cursor()
     curs.execute(sql, (task_id,))
     row = curs.fetchone()
@@ -72,6 +75,7 @@ def get_task(conection, task_id):
         "due_date": row[3],
         "priority": row[4],
         "status": row[5],
+        "created_at": row[6],
     }
 
 def update_task(conection, task_id, new_title=None, new_description=None, new_due_date=None, new_priority=None, new_status=None):

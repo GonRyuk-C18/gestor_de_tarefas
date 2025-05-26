@@ -2,9 +2,16 @@
 
 from models import Task
 from database import add_task, get_all_tasks as db_get_all_tasks, get_task as db_get_task, update_task,update_task_status, delete_task as db_delete_task
+from datetime import datetime
 
 tasks = []
 
+def validate_date_format(date_str):
+    try:
+        datetime.strptime(date_str, '%Y-%m-%d')
+        return True
+    except ValueError:
+        return False
 def create_task(conection, title, description, due_date, priority):
     task = Task(title, description, due_date, priority)
     # tasks.append(task)
@@ -42,9 +49,14 @@ def change_task_db(conection, task_id, new_title=None, new_description=None, new
     return update_task(conection, task_id, new_title, new_description, new_due_date, new_priority, new_status)
 
 def update_task_status_db(conection,task_id,new_status):
-    if task_id <0 or task_id >= len(tasks):
-        return None
-    return update_task_status(conection,task_id,new_status)
+    tasks1 = get_all_tasks_db(conection)
+
+    for taskx in tasks1:
+        if taskx['id'] == task_id:
+            return update_task_status(conection, task_id, new_status)
+
+    return None
+    #return update_task_status(conection,task_id,new_status)
 def delete_task(task_index):
     if task_index <0 or task_index >= len(tasks):
         return  False
