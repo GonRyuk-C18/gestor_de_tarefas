@@ -41,8 +41,13 @@ def add_task(conection, task):
     conection.commit()
     return curs.lastrowid
 
-def get_all_tasks(conection):
-    sql = "SELECT id, title, description, due_date, priority, status, created_at FROM tasks;"
+def get_all_tasks(conection, order_by:None):
+    sql = "SELECT id, title, description, due_date, priority, status, created_at FROM tasks "
+    if order_by in ["due_date", "status", "priority"]:
+        sql += f"ORDER BY {order_by} ASC;"
+    else:
+        sql += ";"
+
     curs = conection.cursor()
     curs.execute(sql)
     rows = curs.fetchall()

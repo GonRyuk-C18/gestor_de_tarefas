@@ -22,8 +22,8 @@ def create_task(conection, title, description, due_date, priority):
 def get_all_tasks():
     return tasks
 
-def get_all_tasks_db(conection):
-    return db_get_all_tasks(conection)
+def get_all_tasks_db(conection, order_by):
+    return db_get_all_tasks(conection, order_by)
 
 def get_task_db(conection,task_id):
     return db_get_task(conection,task_id)

@@ -32,7 +32,15 @@ def select_opcao(conection, opcao):
     elif opcao == '2':
         print("\n---Lista de Tarefas---")
         #tasks = get_all_tasks()
-        tasks = get_all_tasks_db(conection)
+        order_by = int(input("Ordenar por: \n 1.ID \n 2.Vence \n 3.Estado \n 4.Prioridade "))
+        if order_by == 2:
+            tasks = get_all_tasks_db(conection, "due_date")
+        elif order_by == 3:
+            tasks = get_all_tasks_db(conection, "status")
+        elif order_by ==4:
+            tasks = get_all_tasks_db(conection, "priority")
+        else:
+            tasks = get_all_tasks_db(conection, ";")
         if not tasks:
             print("Nenhuma tarefa encontrada")
         else:
